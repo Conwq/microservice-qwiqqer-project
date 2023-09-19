@@ -1,10 +1,10 @@
-package com.example.qwiqqer.verificationsservice;
+package ru.patseev.qwiqqer.eurekaserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class VerificationsServiceApplicationTests {
+class EurekaServerApplicationTests {
 
 	@Test
 	void contextLoads() {

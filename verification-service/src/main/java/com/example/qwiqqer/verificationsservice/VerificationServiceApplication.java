@@ -2,11 +2,13 @@ package com.example.qwiqqer.verificationsservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-public class VerificationsServiceApplication {
+@EnableEurekaClient
+public class VerificationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VerificationsServiceApplication.class, args);
+		SpringApplication.run(VerificationServiceApplication.class, args);
 	}
 }

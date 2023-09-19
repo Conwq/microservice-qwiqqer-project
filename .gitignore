@@ -19,7 +19,11 @@ target/
 *.iml
 *.ipr
 user-service/.mvn
+user-service/HELP.md
 verification-service/.mvn
+verification-service/HELP.md
+eureka-server/.mvn
+eureka-server/HELP.md
 request.http
 
 ### NetBeans ###
