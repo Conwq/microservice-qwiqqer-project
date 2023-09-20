@@ -1,5 +1,6 @@
 package com.example.qwiqqer.usersservice.service.impl;
 
+import com.example.qwiqqer.usersservice.exception.UserAlreadyExistException;
 import com.example.qwiqqer.usersservice.model.dto.UserRequest;
 import com.example.qwiqqer.usersservice.model.dto.VerificationRequest;
 import com.example.qwiqqer.usersservice.model.dto.VerificationResponse;
@@ -24,18 +25,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void saveUser(UserRequest userRequest) {
-		VerificationRequest verificationRequest = VerificationRequest.builder()
-				.email(userRequest.getEmail())
-				.username(userRequest.getUsername())
-				.build();
-
-		ResponseEntity<VerificationResponse> response =
-				restTemplate.postForEntity("http://localhost:8888/api/v1/verifications",
-						verificationRequest, VerificationResponse.class);
+		ResponseEntity<VerificationResponse> response = getUserVerificationResponse(userRequest);
 
 		if (response.getBody().isExist()) {
-			LOGGER.error("User with current email or username exist. Please choose another data.  --> {}",
-					response.getBody().isExist());
+			LOGGER.error("User with current email or username exist.");
 
 			//TODO создать этот Exception и создать ExceptionHandler для этого Exception
 
@@ -43,12 +36,25 @@ public class UserServiceImpl implements UserService {
 					"Please choose another data.");
 		}
 
-		UserEntity userEntity = UserEntity.builder()
+		UserEntity userEntity = mapToEntity(userRequest);
+		userRepository.saveUser(userEntity);
+	}
+
+	private UserEntity mapToEntity(UserRequest userRequest){
+		return UserEntity.builder()
 				.email(userRequest.getEmail())
 				.username(userRequest.getUsername())
 				.password(userRequest.getPassword())
 				.build();
+	}
 
-		userRepository.saveUser(userEntity);
+	private ResponseEntity<VerificationResponse> getUserVerificationResponse(UserRequest userRequest){
+		VerificationRequest verificationRequest = VerificationRequest.builder()
+				.email(userRequest.getEmail())
+				.username(userRequest.getUsername())
+				.build();
+
+		return restTemplate.postForEntity("http://localhost:8888/api/v1/verifications",
+						verificationRequest, VerificationResponse.class);
 	}
 }
