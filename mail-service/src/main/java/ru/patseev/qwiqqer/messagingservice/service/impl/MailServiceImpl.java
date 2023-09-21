@@ -9,15 +9,15 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ru.patseev.qwiqqer.messagingservice.model.dto.MessageRequest;
-import ru.patseev.qwiqqer.messagingservice.service.MessagingService;
+import ru.patseev.qwiqqer.messagingservice.service.MailService;
 
 @Service
 @RequiredArgsConstructor
-public class MessagingServiceImpl implements MessagingService {
+public class MailServiceImpl implements MailService {
 	private final JavaMailSender mailSender;
 	@Value("${spring.mail.username}")
 	private String mailUsername;
-	private static final Logger LOGGER = LoggerFactory.getLogger(MessagingServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
 
 	@Override
 	@RabbitListener(queues = "${qwiqqer.queue.name}")

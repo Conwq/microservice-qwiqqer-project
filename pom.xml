@@ -15,6 +15,9 @@
     <modules>
         <module>user-service</module>
         <module>verification-service</module>
+        <module>eureka-server</module>
+        <module>api-gateway</module>
+        <module>mail-service</module>
     </modules>
 
     <groupId>ru.patseev.qwiqqer</groupId>
