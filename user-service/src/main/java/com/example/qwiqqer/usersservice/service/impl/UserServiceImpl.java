@@ -37,9 +37,6 @@ public class UserServiceImpl implements UserService {
 
 		if (response.getBody().isExist()) {
 			LOGGER.error("User with current email or username exist.");
-
-			//TODO создать этот Exception и создать ExceptionHandler для этого Exception
-
 			throw new UserAlreadyExistException("User with current email or username exist. " +
 					"Please choose another data.");
 		}
