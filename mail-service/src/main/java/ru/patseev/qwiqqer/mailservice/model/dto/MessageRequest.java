@@ -1,4 +1,4 @@
-package ru.patseev.qwiqqer.messagingservice.model.dto;
+package ru.patseev.qwiqqer.mailservice.model.dto;
 
 import lombok.*;
 

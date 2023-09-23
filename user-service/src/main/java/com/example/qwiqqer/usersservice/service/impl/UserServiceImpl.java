@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -40,16 +41,20 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistException("User with current email or username exist. " +
 					"Please choose another data.");
 		}
+		userRequest.setPassword(BCrypt.hashpw(userRequest.getPassword(),
+				BCrypt.gensalt()));
 
 		UserEntity userEntity = mapToEntity(userRequest);
 		userRepository.saveUser(userEntity);
 
-		MessageRequest messageRequest = MessageRequest.builder()
-				.email(userEntity.getEmail())
-				.username(userEntity.getUsername())
-				.build();
+		// Для отправки уведомлений на почту об успешной регистрации
 
-		rabbitTemplate.convertAndSend(exchange, routingKey, messageRequest);
+//		MessageRequest messageRequest = MessageRequest.builder()
+//				.email(userEntity.getEmail())
+//				.username(userEntity.getUsername())
+//				.build();
+//
+//		rabbitTemplate.convertAndSend(exchange, routingKey, messageRequest);
 	}
 
 	private UserEntity mapToEntity(UserRequest userRequest) {

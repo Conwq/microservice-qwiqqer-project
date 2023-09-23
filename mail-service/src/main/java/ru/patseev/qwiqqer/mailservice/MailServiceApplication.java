@@ -1,4 +1,4 @@
-package ru.patseev.qwiqqer.messagingservice;
+package ru.patseev.qwiqqer.mailservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

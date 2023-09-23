@@ -1,4 +1,4 @@
-package ru.patseev.qwiqqer.messagingservice.config;
+package ru.patseev.qwiqqer.mailservice.config;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

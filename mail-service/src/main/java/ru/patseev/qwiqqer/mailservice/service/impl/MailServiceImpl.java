@@ -1,4 +1,4 @@
-package ru.patseev.qwiqqer.messagingservice.service.impl;
+package ru.patseev.qwiqqer.mailservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.patseev.qwiqqer.messagingservice.model.dto.MessageRequest;
-import ru.patseev.qwiqqer.messagingservice.service.MailService;
+import ru.patseev.qwiqqer.mailservice.model.dto.MessageRequest;
+import ru.patseev.qwiqqer.mailservice.service.MailService;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class MailServiceImpl implements MailService {
 
 	@Override
 	@RabbitListener(queues = "${qwiqqer.queue.name}")
-	public void sendLetterToEmail(MessageRequest messageRequest){
+	public void sendLetterToEmail(MessageRequest messageRequest) {
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(mailUsername);
