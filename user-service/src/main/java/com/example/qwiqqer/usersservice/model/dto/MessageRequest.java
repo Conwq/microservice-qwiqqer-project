@@ -12,4 +12,5 @@ import java.io.Serializable;
 public class MessageRequest implements Serializable {
 	private String username;
 	private String email;
+	private String personalCode;
 }

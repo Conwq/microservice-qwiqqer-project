@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -45,5 +42,10 @@ public class UserController {
 				.message("User successfully registered.")
 				.timestamp(LocalDateTime.now())
 				.build(), HttpStatus.CREATED);
+	}
+
+	@GetMapping("{/code}")
+	public void activateUser(@PathVariable("code") String code){
+		userService.activateUser(code);
 	}
 }

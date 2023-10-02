@@ -26,10 +26,13 @@ public class MailServiceImpl implements MailService {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(mailUsername);
 		message.setTo("serega.patseev@gmail.com");
-		message.setSubject("Successfully registration!");
-		message.setText(String.format("%s you are successfully registered.", messageRequest.getUsername()));
-		mailSender.send(message);
+		message.setSubject("Go to the specified address to complete registration!");
+		message.setText(String.format("Dear %s, go to complete registration --> " +
+						"http://localhost:8888/api/v1/users?code=%s",
+				messageRequest.getUsername(),
+				messageRequest.getPersonalCode()));
 
+		mailSender.send(message);
 		LOGGER.info("The letter was successfully delivered to email {}.", messageRequest.getEmail());
 	}
 }
