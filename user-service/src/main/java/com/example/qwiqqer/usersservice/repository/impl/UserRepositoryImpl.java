@@ -3,7 +3,6 @@ package com.example.qwiqqer.usersservice.repository.impl;
 import com.example.qwiqqer.usersservice.model.entity.UserEntity;
 import com.example.qwiqqer.usersservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
