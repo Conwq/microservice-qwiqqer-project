@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface EmailPruneRepository extends JpaRepository<UserEntity, Long> {
 
-	@Query(value = "FROM UserEntity WHERE isActivated = false AND emailSendingTime > :activationTime")
+	@Query(value = "FROM UserEntity WHERE isActivated = false AND emailSendingTime < :activationTime")
 	List<UserEntity> findAllUsersWithInactiveEmail(@Param("activationTime") LocalDateTime activationTime);
 }

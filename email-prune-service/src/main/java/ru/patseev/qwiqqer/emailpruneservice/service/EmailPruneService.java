@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.patseev.qwiqqer.emailpruneservice.model.entity.UserEntity;
 import ru.patseev.qwiqqer.emailpruneservice.repository.EmailPruneRepository;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -21,12 +20,12 @@ public class EmailPruneService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EmailPruneService.class);
 
 	@Transactional
-	@Scheduled(timeUnit = TimeUnit.MINUTES, fixedRate = 3)
+	@Scheduled(timeUnit = TimeUnit.HOURS, fixedRate = 24)
 	public void pruneAllUsersByInactiveEmail(){
 		List<UserEntity> allUsersWithInactiveEmail = pruneRepository
-				.findAllUsersWithInactiveEmail(LocalDateTime.now().minusMinutes(2));
+				.findAllUsersWithInactiveEmail(LocalDateTime.now().minusHours(20));
 
 		pruneRepository.deleteAll(allUsersWithInactiveEmail);
-		LOGGER.warn("Method pruneAllUsersByInactiveEmail working.{}", Instant.now());
+		LOGGER.warn("Prune users from inactive email!");
 	}
 }
