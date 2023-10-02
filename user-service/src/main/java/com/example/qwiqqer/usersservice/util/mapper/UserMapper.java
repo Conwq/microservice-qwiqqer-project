@@ -3,7 +3,9 @@ package com.example.qwiqqer.usersservice.util.mapper;
 import com.example.qwiqqer.usersservice.model.dto.UserRequest;
 import com.example.qwiqqer.usersservice.model.entity.UserEntity;
 import com.example.qwiqqer.usersservice.util.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper extends Mapper<UserEntity, UserRequest> {
 	@Override
 	public UserRequest mapToDto(UserEntity userEntity) {

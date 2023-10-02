@@ -1,6 +1,7 @@
 package com.example.qwiqqer.usersservice.service.impl;
 
 import com.example.qwiqqer.usersservice.exception.UserAlreadyExistException;
+import com.example.qwiqqer.usersservice.model.dto.MessageRequest;
 import com.example.qwiqqer.usersservice.model.dto.UserRequest;
 import com.example.qwiqqer.usersservice.model.dto.VerificationRequest;
 import com.example.qwiqqer.usersservice.model.dto.VerificationResponse;
@@ -26,9 +27,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 	@Value("${qwiqqer.exchange.name}")
-	private final String exchange;
+	private String exchange;
 	@Value("${qwiqqer.routing.key.name}")
-	private final String routingKey;
+	private String routingKey;
 	private final Mapper<UserEntity, UserRequest> mapper;
 	private final UserRepository userRepository;
 	private final RestTemplate restTemplate;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void saveUser(UserRequest userRequest) {
+		//Создаю и отправляю запрос на проверку существования пользователя на другой сервис
 		ResponseEntity<VerificationResponse> response = getUserVerificationResponse(userRequest);
 		if (response.getBody().isExist()) {
 			LOGGER.error("User with current email or username exist.");
@@ -48,19 +50,18 @@ public class UserServiceImpl implements UserService {
 				BCrypt.gensalt()));
 
 		// Для отправки уведомлений на почту для подтверждения электронной почты.
-
 		String personalCode = UUID.randomUUID().toString();
 		UserEntity userEntity = mapper.mapToEntity(userRequest);
+		userEntity.setActivated(false);
+		userEntity.setPersonalCode(personalCode);
 
 		//TODO Доделать отправку данных на почту, и сохранить их в таблице пользователя. Потом этот код удалить из таблицы
-
-//		MessageRequest messageRequest = new MessageRequest(userEntity.getUsername(), userEntity.getEmail(), personalCode);
-//		rabbitTemplate.convertAndSend(exchange, routingKey, messageRequest);
+		MessageRequest messageRequest = new MessageRequest(userEntity.getUsername(), userEntity.getEmail(), personalCode);
+		rabbitTemplate.convertAndSend(exchange, routingKey, messageRequest);
 
 		userRepository.saveUser(userEntity);
 	}
 
-	//Отправляю запрос на проверку существования пользователя
 	private ResponseEntity<VerificationResponse> getUserVerificationResponse(UserRequest userRequest) {
 		VerificationRequest verificationRequest = VerificationRequest.builder()
 				.email(userRequest.getEmail())
@@ -72,10 +73,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public void activateUser(String code){
-		Optional<UserEntity> optionalUser = userRepository.findUserByCode(code);
+	public boolean activateUser(String code){
+		Optional<UserEntity> optionalUser = userRepository.findUserByPersonalCode(code);
 		if (optionalUser.isEmpty()){
-//			throw new UserByCodeNotFoundException();
+			LOGGER.warn("User not activated.");
+			return false;
 		}
+		UserEntity userEntity = optionalUser.get();
+		userEntity.setPersonalCode(null);
+		userEntity.setActivated(true);
+		return true;
 	}
 }

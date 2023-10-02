@@ -25,14 +25,15 @@ public class MailServiceImpl implements MailService {
 
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setFrom(mailUsername);
+		//TODO: Тут нужно использовать имейл, под которым зарегистрировался пользователь
 		message.setTo("serega.patseev@gmail.com");
 		message.setSubject("Go to the specified address to complete registration!");
 		message.setText(String.format("Dear %s, go to complete registration --> " +
-						"http://localhost:8888/api/v1/users?code=%s",
+						"http://localhost:8888/api/v1/users?access_code=%s",
 				messageRequest.getUsername(),
 				messageRequest.getPersonalCode()));
 
 		mailSender.send(message);
-		LOGGER.info("The letter was successfully delivered to email {}.", messageRequest.getEmail());
+		LOGGER.info("The letter was successfully delivered to email {}!", messageRequest.getEmail());
 	}
 }

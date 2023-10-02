@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface UserRepository {
 	void saveUser(UserEntity userEntity);
-	Optional<UserEntity> findUserByCode(String code);
+	Optional<UserEntity> findUserByPersonalCode(String code);
 }

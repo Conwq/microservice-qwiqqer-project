@@ -21,10 +21,11 @@ public class UserRepositoryImpl implements UserRepository {
 	}
 
 	@Override
-	public Optional<UserEntity> findUserByCode(String code) {
-		TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u WHERE code = :code",
-				UserEntity.class);
+	public Optional<UserEntity> findUserByPersonalCode(String code) {
+		TypedQuery<UserEntity> query = entityManager
+				.createQuery("SELECT u FROM UserEntity u WHERE u.personalCode = :code", UserEntity.class);
 		query.setParameter("code", code);
+
 		return Optional.of(query.getSingleResult());
 	}
 }
