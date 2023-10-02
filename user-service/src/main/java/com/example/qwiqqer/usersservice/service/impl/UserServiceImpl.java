@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 		userRequest.setPassword(BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt()));
 
-		// Для отправки уведомлений на почту для подтверждения электронной почты.
+		// Отправка уведомлений на почту для подтверждения электронной почты.
 		String personalCode = UUID.randomUUID().toString();
 		UserEntity userEntity = mapper.mapToEntity(userRequest);
 		userEntity.setActivated(false);

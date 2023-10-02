@@ -18,6 +18,7 @@
         <module>eureka-server</module>
         <module>api-gateway</module>
         <module>mail-service</module>
+        <module>email-prune-service</module>
     </modules>
 
     <groupId>ru.patseev.qwiqqer</groupId>

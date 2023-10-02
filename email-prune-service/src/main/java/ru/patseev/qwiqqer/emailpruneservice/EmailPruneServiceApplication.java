@@ -1,15 +1,16 @@
-package com.example.qwiqqer.usersservice;
+package ru.patseev.qwiqqer.emailpruneservice;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class UserServiceApplication {
+@EnableScheduling
+public class EmailPruneServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserServiceApplication.class, args);
+		SpringApplication.run(EmailPruneServiceApplication.class, args);
 	}
 }
