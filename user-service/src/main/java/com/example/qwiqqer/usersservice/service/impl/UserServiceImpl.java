@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistException("User with current email or username exist.");
 		}
 
-		userRequest.setPassword(BCrypt.hashpw(userRequest.getPassword(),
-				BCrypt.gensalt()));
+		userRequest.setPassword(BCrypt.hashpw(userRequest.getPassword(), BCrypt.gensalt()));
 
 		// Для отправки уведомлений на почту для подтверждения электронной почты.
 		String personalCode = UUID.randomUUID().toString();
@@ -55,7 +54,6 @@ public class UserServiceImpl implements UserService {
 		userEntity.setActivated(false);
 		userEntity.setPersonalCode(personalCode);
 
-		//TODO Доделать отправку данных на почту, и сохранить их в таблице пользователя. Потом этот код удалить из таблицы
 		MessageRequest messageRequest = new MessageRequest(userEntity.getUsername(), userEntity.getEmail(), personalCode);
 		rabbitTemplate.convertAndSend(exchange, routingKey, messageRequest);
 

@@ -4,8 +4,6 @@ import com.example.qwiqqer.usersservice.model.dto.UserRequest;
 import com.example.qwiqqer.usersservice.model.dto.UserResponse;
 import com.example.qwiqqer.usersservice.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,7 +17,6 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserController {
 	private final UserService userService;
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping
 	public ResponseEntity<UserResponse> saveUser(@RequestBody @Valid UserRequest userRequest,
@@ -33,7 +30,6 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<UserResponse> activateUser(@RequestParam("access_code") String code) {
-		LOGGER.error("I`m here!!!");
 		if (!userService.activateUser(code)){
 			return buildResponse(HttpStatus.BAD_REQUEST);
 		}

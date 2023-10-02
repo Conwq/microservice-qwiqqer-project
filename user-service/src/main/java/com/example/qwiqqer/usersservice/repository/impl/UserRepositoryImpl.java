@@ -25,7 +25,6 @@ public class UserRepositoryImpl implements UserRepository {
 		TypedQuery<UserEntity> query = entityManager
 				.createQuery("SELECT u FROM UserEntity u WHERE u.personalCode = :code", UserEntity.class);
 		query.setParameter("code", code);
-
-		return Optional.of(query.getSingleResult());
+		return query.getResultList().stream().findAny();
 	}
 }
