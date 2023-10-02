@@ -1,19 +1,21 @@
 package com.example.qwiqqer.usersservice.model.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequest implements Serializable {
+	@NotBlank
 	private String email;
+	@NotBlank
 	private String username;
+	@NotBlank
 	private String password;
 }

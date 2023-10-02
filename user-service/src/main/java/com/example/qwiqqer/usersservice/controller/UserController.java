@@ -6,8 +6,13 @@ import com.example.qwiqqer.usersservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
@@ -17,13 +22,28 @@ public class UserController {
 	private final UserService userService;
 
 	@PostMapping
-	public ResponseEntity<UserResponse> saveUser(@RequestBody UserRequest userRequest){
+	public ResponseEntity<UserResponse> saveUser(@RequestBody @Valid UserRequest userRequest,
+												 BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return buildResponse(HttpStatus.BAD_REQUEST);
+		}
 		userService.saveUser(userRequest);
-		UserResponse userResponse = UserResponse.builder()
+		return buildResponse(HttpStatus.CREATED);
+	}
+
+	private ResponseEntity<UserResponse> buildResponse(HttpStatus status) {
+		if (status == HttpStatus.BAD_REQUEST) {
+			return new ResponseEntity<>(UserResponse.builder()
+					.status(HttpStatus.BAD_REQUEST.value())
+					.message("Incorrect data.")
+					.timestamp(LocalDateTime.now())
+					.build(), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(UserResponse.builder()
 				.status(HttpStatus.CREATED.value())
 				.message("User successfully registered.")
 				.timestamp(LocalDateTime.now())
-				.build();
-		return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+				.build(), HttpStatus.CREATED);
 	}
 }
